@@ -1,0 +1,5 @@
+dependencies: \
+  /Users/lilil/LilCompany/AoDrunner/cocos2d/cocos/audio/ios/CocosDenshion.m \
+  /Users/lilil/LilCompany/AoDrunner/cocos2d/cocos/audio/ios/CocosDenshion.h \
+  /Users/lilil/LilCompany/AoDrunner/cocos2d/cocos/audio/ios/CDConfig.h \
+  /Users/lilil/LilCompany/AoDrunner/cocos2d/cocos/audio/ios/CDOpenALSupport.h
