@@ -15,7 +15,7 @@ Scene* Runner::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // 'layer' is an autorelease object
     auto layer = Runner::create();
     
@@ -35,6 +35,9 @@ bool Runner::init()
     {
         return false;
     }
+    std::vector<std::string> searchPaths;
+    searchPaths.push_back("fonts");
+    FileUtils::getInstance()->setSearchPaths(searchPaths);
     
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
@@ -55,7 +58,7 @@ bool Runner::init()
     // create menu, it's an autorelease object
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
+    this->addChild(menu, 4);
     
     /////////////////////////////
     // 3. add your codes below...
@@ -76,41 +79,43 @@ bool Runner::init()
     
     auto rectNode = DrawNode::create();
     auto rectBlockNode = DrawNode::create();
+    auto rectNode1 = DrawNode::create();
+    auto rectBlockNode1 = DrawNode::create();
     Vec2 whiteRect[4];
-    whiteRect[0] = Vec2(0, visibleSize.height/2 + blockWidth);
-    whiteRect[1] = Vec2(visibleSize.width, visibleSize.height/2 + blockWidth);
-    whiteRect[2] = Vec2(visibleSize.width, visibleSize.height);
-    whiteRect[3] = Vec2(0, visibleSize.height);
+    whiteRect[0] = Vec2(origin.x, origin.y+visibleSize.height/2 + blockWidth);
+    whiteRect[1] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height/2 + blockWidth);
+    whiteRect[2] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height);
+    whiteRect[3] = Vec2(origin.x, origin.y+visibleSize.height);
  
     Vec2 lilWhiteRect[4];
-    lilWhiteRect[0] = Vec2(0, visibleSize.height/2 - blockWidth);
-    lilWhiteRect[1] = Vec2(visibleSize.width, visibleSize.height/2 - blockWidth);
-    lilWhiteRect[2] = Vec2(visibleSize.width, visibleSize.height/2);
-    lilWhiteRect[3] = Vec2(0, visibleSize.height/2);
+    lilWhiteRect[0] = Vec2(origin.x, origin.y+visibleSize.height/2 - blockWidth);
+    lilWhiteRect[1] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height/2 - blockWidth);
+    lilWhiteRect[2] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height/2);
+    lilWhiteRect[3] = Vec2(origin.x, origin.y+visibleSize.height/2);
     
     Vec2 blackRect[4];
-    blackRect[0] = Vec2(0, 0);
-    blackRect[1] = Vec2(visibleSize.width, 0);
-    blackRect[2] = Vec2(visibleSize.width, visibleSize.height/2);
-    blackRect[3] = Vec2(0, visibleSize.height/2);
+    blackRect[0] = Vec2(origin.x, origin.y);
+    blackRect[1] = Vec2(origin.x+visibleSize.width, origin.y);
+    blackRect[2] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height/2 - blockWidth);
+    blackRect[3] = Vec2(origin.x, origin.y+visibleSize.height/2 - blockWidth);
     
     Vec2 lilBlackRect[4];
-    lilBlackRect[0] = Vec2(0, visibleSize.height/2 - blockWidth);
-    lilBlackRect[1] = Vec2(visibleSize.width, visibleSize.height/2 - blockWidth);
-    lilBlackRect[2] = Vec2(visibleSize.width, visibleSize.height/2 + blockWidth);
-    lilBlackRect[3] = Vec2(0, visibleSize.height/2 + blockWidth);
+    lilBlackRect[0] = Vec2(origin.x, origin.y+visibleSize.height/2);
+    lilBlackRect[1] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height/2);
+    lilBlackRect[2] = Vec2(origin.x+visibleSize.width, origin.y+visibleSize.height/2 + blockWidth);
+    lilBlackRect[3] = Vec2(origin.x, origin.y+visibleSize.height/2 + blockWidth);
     
     
     Color4F white(1, 1, 1, 1);
-    Color4F black(0, 0, 0, 0);
+    Color4F black(0, 0, 0, 1);
     
     rectNode->drawPolygon(whiteRect, 4, white, 0, white);
-    rectNode->drawPolygon(blackRect, 4, black, 0, black);
+    rectNode1->drawPolygon(blackRect, 4, black, 0, black);
     rectBlockNode->drawPolygon(lilWhiteRect, 4, white, 0, white);
-    rectBlockNode->drawPolygon(lilBlackRect, 4, black, 0, black);
+    rectBlockNode1->drawPolygon(lilBlackRect, 4, black, 0, black);
     
     
-    auto physicsBody = PhysicsBody::createBox(Size(visibleSize.width, 2*blockWidth),
+    auto physicsBody = PhysicsBody::createBox(Size(visibleSize.width, 2*blockWidth-1),
                                               PhysicsMaterial(1.0f, 0.0f, 0.0f), Vec2(origin.x + visibleSize.width/2,
                                                                                       origin.y + visibleSize.height/2));
     physicsBody->setRotationEnable(false);
@@ -118,16 +123,117 @@ bool Runner::init()
     physicsBody->setDynamic(false);
     rectBlockNode->setPhysicsBody(physicsBody);
 
+    prepareClouds();
+    prepareFires();
+
     prepareHero();
     prepareHell();
     prepareHeaven();
     // add the sprite as a child to this layer
     this->addChild(rectNode, 0);
-    this->addChild(rectBlockNode);
+    this->addChild(rectBlockNode,0);
+    this->addChild(rectNode1, 0);
+    this->addChild(rectBlockNode1,0);
+    
+    
+    score_label_black = Label::createWithTTF("score: 0","FFF_Tusj.ttf", blockWidth);
+    score_label_black->setPosition(Point(origin.x + visibleSize.width/2,origin.y + visibleSize.height/2 - blockWidth/2));
+    score_label_black->setColor(Color3B(0,0,0));
+    score_label_black->setRotation(180);
+    this->addChild(score_label_black);
+    score_label_white = Label::createWithTTF("score: 0","FFF_Tusj.ttf", blockWidth);
+    score_label_white->setPosition(Point(origin.x + visibleSize.width/2,origin.y + visibleSize.height/2 + blockWidth/2));
+    this->addChild(score_label_white);
     
     this->scheduleUpdate();
     return true;
 }
+
+void Runner::prepareClouds() {
+    for (auto i = 0; i < 3; i++) {
+        auto back_sprite = Sprite::create("clouds.png");
+        auto h = back_sprite->getContentSize().height;
+        auto w = back_sprite->getContentSize().width;
+        auto sc = (int(visibleSize.width/w)+1) / (visibleSize.width/w);
+        //back_sprite->setScaleX(sc);
+        
+        back_sprite->getTexture()->setTexParameters({.minFilter =  GL_LINEAR, .magFilter =  GL_LINEAR, .wrapS =  GL_REPEAT, .wrapT =  GL_REPEAT});
+        back_sprite->setTextureRect(Rect(0, origin.y,
+                                         visibleSize.width*sc, h - 1));
+        
+
+        back_sprite->setScaleY(scale_hero);
+
+        back_sprite->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - 1.5*h*scale_hero + h/2*i*scale_hero);
+        back_sprite->setOpacity(155+50*i);
+        addChild(back_sprite, i+1);
+
+        auto back_sprite_copy = Sprite::create("clouds.png");
+        back_sprite_copy->getTexture()->setTexParameters({.minFilter =  GL_LINEAR, .magFilter =  GL_LINEAR, .wrapS =  GL_REPEAT, .wrapT =  GL_REPEAT});
+        back_sprite_copy->setTextureRect(Rect(0, origin.y,
+                                         visibleSize.width*sc, h - 1));
+        back_sprite_copy->setScaleY(scale_hero);
+        back_sprite_copy->setPosition(origin.x + visibleSize.width/2 + visibleSize.width*sc, origin.y + visibleSize.height - 1.5*h*scale_hero + h/2*i*scale_hero);
+        back_sprite_copy->setOpacity(155+50*i);
+        addChild(back_sprite_copy, i+1);
+        
+        auto duration = MY_VELOCITY * 30 - 2*i;
+        back_sprite->runAction(RepeatForever::create(
+                               Sequence::create(MoveBy::create(duration, Vec2(-visibleSize.width*sc, 0)),
+                                                MoveBy::create(0, Vec2(2*visibleSize.width*sc, 0)),
+                                                MoveBy::create(duration, Vec2(-visibleSize.width*sc, 0)),
+                                                NULL)));
+        back_sprite_copy->runAction(RepeatForever::create(
+                                                          Sequence::create(MoveBy::create(2*duration, Vec2(-2*visibleSize.width*sc, 0)),
+                                                MoveBy::create(0, Vec2(2*visibleSize.width*sc, 0)),
+                                                NULL)));
+        
+        clouds.pushBack(back_sprite);
+        clouds.pushBack(back_sprite_copy);
+    }
+}
+
+void Runner::prepareFires() {
+    for (auto i = 0; i < 3; i++) {
+        auto back_sprite = Sprite::create("fires.png");
+        auto h = back_sprite->getContentSize().height;
+        back_sprite->getTexture()->setTexParameters({.minFilter =  GL_NEAREST, .magFilter =  GL_NEAREST, .wrapS =  GL_REPEAT, .wrapT =  GL_REPEAT});
+        back_sprite->setTextureRect(Rect(0, origin.y,
+                                         visibleSize.width, h - 1));
+        
+        back_sprite->setScale(scale_hero);
+        
+        back_sprite->setPosition(origin.x + visibleSize.width/2, origin.y + 1.5*h*scale_hero - h/2*i*scale_hero);
+        back_sprite->setOpacity(155+50*i);
+        addChild(back_sprite, i+1);
+        
+        auto back_sprite_copy = Sprite::create("fires.png");
+        back_sprite_copy->getTexture()->setTexParameters({.minFilter =  GL_NEAREST, .magFilter =  GL_NEAREST, .wrapS =  GL_REPEAT, .wrapT =  GL_REPEAT});
+        back_sprite_copy->setTextureRect(Rect(0, origin.y,
+                                              visibleSize.width, h - 1));
+        
+        back_sprite_copy->setPosition(origin.x + visibleSize.width*3/2, origin.y + 1.5*h*scale_hero - h/2*i*scale_hero);
+        back_sprite_copy->setOpacity(155+50*i);
+        addChild(back_sprite_copy, i+1);
+        
+        auto duration = MY_VELOCITY * 30 - 2*i;
+        back_sprite->runAction(RepeatForever::create(
+                                                     Sequence::create(MoveBy::create(duration, Vec2(-visibleSize.width, 0)),
+                                                                      MoveBy::create(0, Vec2(2*visibleSize.width, 0)),
+                                                                      MoveBy::create(duration, Vec2(-visibleSize.width, 0)),
+                                                                      NULL)));
+        back_sprite_copy->runAction(RepeatForever::create(
+                                                          Sequence::create(MoveBy::create(2*duration, Vec2(-2*visibleSize.width, 0)),
+                                                                           MoveBy::create(0, Vec2(2*visibleSize.width, 0)),
+                                                                           NULL)));
+        
+        fires.pushBack(back_sprite);
+        fires.pushBack(back_sprite_copy);
+    }
+}
+
+
+
 
 
 void Runner::prepareHell() {
@@ -180,7 +286,7 @@ void Runner::prepareHell() {
         auto action = RepeatForever::create(animateHeaven);
         sprite->runAction(action);
         
-        addChild(sprite, 1);
+        addChild(sprite, 2);
         hellmen.pushBack(sprite);
     }
 
@@ -235,7 +341,7 @@ void Runner::prepareHeaven() {
         auto action = RepeatForever::create(animateHeaven);
         sprite->runAction(action);
         
-        addChild(sprite, 1);
+        addChild(sprite, 2);
         heavenmen.pushBack(sprite);
     }
 }
@@ -380,6 +486,15 @@ void Runner::update(float delta) {
         }
     }
     else {
+        time += delta;
+        if (time >= MY_VELOCITY * 30) {
+            score++;
+            char *res = new char[50];
+            std::sprintf(res, "score: %i", score);
+            score_label_black->setString(res);
+            score_label_white->setString(res);
+            time = 0;
+        }
         if (mysprite->getActionByTag(FLYING)) {
             if (mysprite->getPositionY() == origin.y + visibleSize.height/2 + blockWidth +
                 hideSize) {
@@ -520,7 +635,7 @@ bool Runner::onContactBegin(const cocos2d::PhysicsContact &contact) {
             mysprite->stopAllActions();
             mysprite->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("daemondeath.png"));
             mysprite->runAction(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
-                                               origin.y + visibleSize.height/2 + blockWidth + hideSize)));
+                                               origin.y + visibleSize.height/2 + blockWidth/2 + hideSize)));
             isRunning = false;
             return false;
         } else if ((nodeA->getTag() == HERO_SPRITE_TAG and nodeB->getTag() == HELLMEN) or
@@ -528,7 +643,7 @@ bool Runner::onContactBegin(const cocos2d::PhysicsContact &contact) {
             mysprite->stopAllActions();
             mysprite->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("angeldeath.png"));
             mysprite->runAction(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
-                                                                   origin.y + visibleSize.height/2 - blockWidth - hideSize)));
+                                                                   origin.y + visibleSize.height/2 - blockWidth/2 - hideSize)));
             isRunning = false;
             return false;
         } else if ((nodeA->getTag() == HEAVENMEN and nodeB->getTag() == HEAVENMEN) or
@@ -566,6 +681,11 @@ void Runner::stopMen() {
             heavenboy->stopAllActions();
         }
     }
+    
+    for (auto cloud : clouds)
+        cloud->stopAllActions();
+    for (auto fire : fires)
+        fire->stopAllActions();
     
     isStop = true;
     

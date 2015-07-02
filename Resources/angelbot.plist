@@ -7,253 +7,253 @@
 			<key>angel01bot01.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{244,732},{243,243}}</string>
+				<string>{{265,795},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel01bot02.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{732,244},{243,243}}</string>
+				<string>{{795,265},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel01bot03.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{732,0},{243,243}}</string>
+				<string>{{795,0},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel02bot01.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{488,976},{243,243}}</string>
+				<string>{{530,1060},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel02bot02.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{488,732},{243,243}}</string>
+				<string>{{530,795},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel02bot03.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{488,488},{243,243}}</string>
+				<string>{{530,530},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel03bot01.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{488,244},{243,243}}</string>
+				<string>{{530,265},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel03bot02.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{488,0},{243,243}}</string>
+				<string>{{530,0},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel03bot03.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{244,976},{243,243}}</string>
+				<string>{{265,1060},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel04bot01.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{732,488},{243,243}}</string>
+				<string>{{795,530},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel04bot02.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{244,488},{243,243}}</string>
+				<string>{{265,530},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel04bot03.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{244,244},{243,243}}</string>
+				<string>{{265,265},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel05bot01.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{244,0},{243,243}}</string>
+				<string>{{265,0},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel05bot02.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,976},{243,243}}</string>
+				<string>{{0,1060},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel05bot03.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,732},{243,243}}</string>
+				<string>{{0,795},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel06bot01.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,488},{243,243}}</string>
+				<string>{{0,530},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel06bot02.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,244},{243,243}}</string>
+				<string>{{0,265},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 			<key>angel06bot03.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{243,243}}</string>
+				<string>{{0,0},{264,264}}</string>
 				<key>sourceSize</key>
-				<string>{243,243}</string>
+				<string>{264,264}</string>
 			</dict>
 
 		</dict>
@@ -263,7 +263,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{976,1220}</string>
+			<string>{1060,1325}</string>
 			<key>textureFileName</key>
 			<string>angelbot.png</string>
 			</dict>

@@ -23,8 +23,6 @@ THE SOFTWARE.
  ****************************************************************************/
 package org.cocos2dx.lib;
 
-import org.cocos2dx.lib.Cocos2dxHelper.Cocos2dxHelperListener;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,10 +31,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
-import android.view.ViewGroup;
-import android.util.Log;
-import android.widget.FrameLayout;
 import android.preference.PreferenceManager.OnActivityResultListener;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import org.cocos2dx.lib.Cocos2dxHelper.Cocos2dxHelperListener;
 
 public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelperListener {
 	// ===========================================================
@@ -183,6 +183,16 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         // Switch to supported OpenGL (ARGB888) mode on emulator
         if (isAndroidEmulator())
            this.mGLSurfaceView.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            this.mGLSurfaceView.setSystemUiVisibility(Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+
 
         this.mGLSurfaceView.setCocos2dxRenderer(new Cocos2dxRenderer());
         this.mGLSurfaceView.setCocos2dxEditText(edittext);

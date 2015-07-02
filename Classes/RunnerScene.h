@@ -24,12 +24,21 @@ public:
     
     cocos2d::Vector<cocos2d::Sprite*> heavenmen;
     cocos2d::Vector<cocos2d::Sprite*> hellmen;
+    cocos2d::Vector<cocos2d::Sprite*> clouds;
+    cocos2d::Vector<cocos2d::Sprite*> fires;
+    
     
     cocos2d::Sprite* mysprite;
     cocos2d::Animate* animateDaemonGoing;
     cocos2d::Animate* animateAngelGoing;
     cocos2d::Animate* animateDaemonFlying;
     cocos2d::Animate* animateAngelFlying;
+    
+    cocos2d::Label* score_label_black;
+    cocos2d::Label* score_label_white;
+    float time = 0;
+    int score = 0;
+    
     
     float scale_hero = 1.0;
     cocos2d::Size visibleSize;
@@ -45,6 +54,8 @@ public:
     void prepareHero();
     void prepareHeaven();
     void prepareHell();
+    void prepareClouds();
+    void prepareFires();
     void stopMen();
 };
 
