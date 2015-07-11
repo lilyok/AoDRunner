@@ -72,6 +72,15 @@
 		92CE4B6E1B4095F40065F508 /* clouds.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B6C1B4095F40065F508 /* clouds.png */; };
 		92CE4B6F1B4095F40065F508 /* fires.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B6D1B4095F40065F508 /* fires.png */; };
 		92CE4B721B41EB1D0065F508 /* FFF_Tusj.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B711B41EB1D0065F508 /* FFF_Tusj.ttf */; };
+		92CE4B791B4EBE4B0065F508 /* PlayNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B741B4EBE4B0065F508 /* PlayNormal.png */; };
+		92CE4B7A1B4EBE4B0065F508 /* PlaySelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B751B4EBE4B0065F508 /* PlaySelected.png */; };
+		92CE4B7B1B4EBE4B0065F508 /* RestartNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B761B4EBE4B0065F508 /* RestartNormal.png */; };
+		92CE4B7C1B4EBE4B0065F508 /* RestartSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B771B4EBE4B0065F508 /* RestartSelected.png */; };
+		92CE4B7F1B509D430065F508 /* newmax_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B7D1B509D430065F508 /* newmax_black.png */; };
+		92CE4B801B509D430065F508 /* newmax_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B7E1B509D430065F508 /* newmax_white.png */; };
+		92CE4B841B50A1B20065F508 /* harpup.wav in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B811B50A1B20065F508 /* harpup.wav */; };
+		92CE4B851B50A1B20065F508 /* pain.wav in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B821B50A1B20065F508 /* pain.wav */; };
+		92CE4B861B50A1B20065F508 /* step.wav in Resources */ = {isa = PBXBuildFile; fileRef = 92CE4B831B50A1B20065F508 /* step.wav */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -281,6 +290,15 @@
 		92CE4B6C1B4095F40065F508 /* clouds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clouds.png; sourceTree = "<group>"; };
 		92CE4B6D1B4095F40065F508 /* fires.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fires.png; sourceTree = "<group>"; };
 		92CE4B711B41EB1D0065F508 /* FFF_Tusj.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FFF_Tusj.ttf; sourceTree = "<group>"; };
+		92CE4B741B4EBE4B0065F508 /* PlayNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayNormal.png; sourceTree = "<group>"; };
+		92CE4B751B4EBE4B0065F508 /* PlaySelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlaySelected.png; sourceTree = "<group>"; };
+		92CE4B761B4EBE4B0065F508 /* RestartNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RestartNormal.png; sourceTree = "<group>"; };
+		92CE4B771B4EBE4B0065F508 /* RestartSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RestartSelected.png; sourceTree = "<group>"; };
+		92CE4B7D1B509D430065F508 /* newmax_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newmax_black.png; sourceTree = "<group>"; };
+		92CE4B7E1B509D430065F508 /* newmax_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newmax_white.png; sourceTree = "<group>"; };
+		92CE4B811B50A1B20065F508 /* harpup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = harpup.wav; sourceTree = "<group>"; };
+		92CE4B821B50A1B20065F508 /* pain.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pain.wav; sourceTree = "<group>"; };
+		92CE4B831B50A1B20065F508 /* step.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = step.wav; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -478,6 +496,15 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92CE4B811B50A1B20065F508 /* harpup.wav */,
+				92CE4B821B50A1B20065F508 /* pain.wav */,
+				92CE4B831B50A1B20065F508 /* step.wav */,
+				92CE4B7D1B509D430065F508 /* newmax_black.png */,
+				92CE4B7E1B509D430065F508 /* newmax_white.png */,
+				92CE4B741B4EBE4B0065F508 /* PlayNormal.png */,
+				92CE4B751B4EBE4B0065F508 /* PlaySelected.png */,
+				92CE4B761B4EBE4B0065F508 /* RestartNormal.png */,
+				92CE4B771B4EBE4B0065F508 /* RestartSelected.png */,
 				92CE4B701B41EB1D0065F508 /* fonts */,
 				92CE4B6C1B4095F40065F508 /* clouds.png */,
 				92CE4B6D1B4095F40065F508 /* fires.png */,
@@ -668,29 +695,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
+				92CE4B791B4EBE4B0065F508 /* PlayNormal.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				92CE4B6A1B3F5F1E0065F508 /* daemonbot.plist in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				1AFAF8BC16D35E4900DB1158 /* CloseNormal.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
+				92CE4B861B50A1B20065F508 /* step.wav in Resources */,
 				92CE4B6E1B4095F40065F508 /* clouds.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				92CE4B7F1B509D430065F508 /* newmax_black.png in Resources */,
 				1AFAF8BD16D35E4900DB1158 /* CloseSelected.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				92CE4B661B3EFF730065F508 /* angelbot.plist in Resources */,
 				92CE4B6B1B3F5F1E0065F508 /* daemonbot.png in Resources */,
+				92CE4B841B50A1B20065F508 /* harpup.wav in Resources */,
 				92CE4B721B41EB1D0065F508 /* FFF_Tusj.ttf in Resources */,
+				92CE4B7B1B4EBE4B0065F508 /* RestartNormal.png in Resources */,
+				92CE4B7C1B4EBE4B0065F508 /* RestartSelected.png in Resources */,
 				1AFAF8BE16D35E4900DB1158 /* HelloWorld.png in Resources */,
 				92CE4B671B3EFF730065F508 /* angelbot.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
+				92CE4B851B50A1B20065F508 /* pain.wav in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				92CE4B5F1B370DC50065F508 /* aod.png in Resources */,
 				92CE4B6F1B4095F40065F508 /* fires.png in Resources */,
 				92CE4B5E1B370DC50065F508 /* aod.plist in Resources */,
+				92CE4B7A1B4EBE4B0065F508 /* PlaySelected.png in Resources */,
+				92CE4B801B509D430065F508 /* newmax_white.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,

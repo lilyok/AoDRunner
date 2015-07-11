@@ -14,6 +14,10 @@ public:
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+    void menuPlayCallback(cocos2d::Ref* pSender);
+    void menuRestartCallback(cocos2d::Ref* pSender);
+
+    
     virtual void onEnter();
     virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     void update(float delta) override;
@@ -22,10 +26,15 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(Runner);
     
+    cocos2d::MenuItemImage* playItem;
+    cocos2d::MenuItemImage* restartItem;
+    cocos2d::MenuItemImage* closeItem;
+    
     cocos2d::Vector<cocos2d::Sprite*> heavenmen;
     cocos2d::Vector<cocos2d::Sprite*> hellmen;
     cocos2d::Vector<cocos2d::Sprite*> clouds;
     cocos2d::Vector<cocos2d::Sprite*> fires;
+    cocos2d::Sprite* wreath;
     
     
     cocos2d::Sprite* mysprite;
@@ -36,8 +45,10 @@ public:
     
     cocos2d::Label* score_label_black;
     cocos2d::Label* score_label_white;
+    CocosDenshion::SimpleAudioEngine* audio;
     float time = 0;
     int score = 0;
+    int high_score = 0;
     
     
     float scale_hero = 1.0;
@@ -48,8 +59,9 @@ public:
     
     int numOfHeaven = 0;
     bool isHell = false;
-    bool isRunning = true;
+    bool isRunning = false;
     bool isStop = false;
+    bool isMenu = true;
     
     void prepareHero();
     void prepareHeaven();
@@ -57,6 +69,8 @@ public:
     void prepareClouds();
     void prepareFires();
     void stopMen();
+    void lose();
+    void setMaxScore(int current_score);
 };
 
 #endif // __Runner_SCENE_H__

@@ -10,6 +10,8 @@ USING_NS_CC;
 #define HEAVENMEN 77
 #define HELLMEN 66
 #define ENDING 1000
+#define BLOCK 111
+const char *HIGH_SCORE="l";
 
 Scene* Runner::createScene()
 {
@@ -47,16 +49,34 @@ bool Runner::init()
     //    you may modify it.
     
     // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
+    playItem = MenuItemImage::create(
+                                           "PlayNormal.png",
+                                           "PlaySelected.png",
+                                           CC_CALLBACK_1(Runner::menuPlayCallback, this));
+    
+    auto item_scale = visibleSize.height/3/playItem->getContentSize().height;
+    
+    playItem->setPosition(Vec2(origin.x + visibleSize.width - item_scale*playItem->getContentSize().width/2 ,
+                                origin.y + visibleSize.height - 10 -  item_scale*playItem->getContentSize().height/2));
+    restartItem = MenuItemImage::create(
+                                           "RestartNormal.png",
+                                           "RestartSelected.png",
+                                           CC_CALLBACK_1(Runner::menuRestartCallback, this));
+    
+    restartItem->setPosition(Vec2(origin.x + visibleSize.width - item_scale*restartItem->getContentSize().width/2 ,
+                                origin.y + visibleSize.height - 10 -  item_scale*restartItem->getContentSize().height/2));
+    
+    restartItem->setVisible(false);
+    closeItem = MenuItemImage::create(
                                            "CloseNormal.png",
                                            "CloseSelected.png",
                                            CC_CALLBACK_1(Runner::menuCloseCallback, this));
     
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
+    closeItem->setPosition(Vec2(origin.x + visibleSize.width - item_scale*closeItem->getContentSize().width/2 ,
+                                origin.y + 10 + item_scale*closeItem->getContentSize().height/2));
     
     // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
+    auto menu = Menu::create(closeItem, playItem, restartItem, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 4);
     
@@ -113,15 +133,16 @@ bool Runner::init()
     rectNode1->drawPolygon(blackRect, 4, black, 0, black);
     rectBlockNode->drawPolygon(lilWhiteRect, 4, white, 0, white);
     rectBlockNode1->drawPolygon(lilBlackRect, 4, black, 0, black);
-    
-    
+
     auto physicsBody = PhysicsBody::createBox(Size(visibleSize.width, 2*blockWidth-1),
                                               PhysicsMaterial(1.0f, 0.0f, 0.0f), Vec2(origin.x + visibleSize.width/2,
                                                                                       origin.y + visibleSize.height/2));
     physicsBody->setRotationEnable(false);
     physicsBody->setGravityEnable(false);
     physicsBody->setDynamic(false);
+    physicsBody->setContactTestBitmask(0xFFFFFFFF);
     rectBlockNode->setPhysicsBody(physicsBody);
+    rectBlockNode->setTag(BLOCK);
 
     prepareClouds();
     prepareFires();
@@ -131,19 +152,26 @@ bool Runner::init()
     prepareHeaven();
     // add the sprite as a child to this layer
     this->addChild(rectNode, 0);
-    this->addChild(rectBlockNode,0);
+    this->addChild(rectBlockNode,1);
     this->addChild(rectNode1, 0);
-    this->addChild(rectBlockNode1,0);
+    this->addChild(rectBlockNode1,1);
     
+    const char *HIGH_SCORE="l";
+    high_score = UserDefault::getInstance()->getIntegerForKey(HIGH_SCORE);
     
-    score_label_black = Label::createWithTTF("score: 0","FFF_Tusj.ttf", blockWidth);
+    char *res = new char[50];
+    std::sprintf(res, "score: 0 (max: %i)", high_score);
+    
+    score_label_black = Label::createWithTTF(res,"FFF_Tusj.ttf", blockWidth);
     score_label_black->setPosition(Point(origin.x + visibleSize.width/2,origin.y + visibleSize.height/2 - blockWidth/2));
     score_label_black->setColor(Color3B(0,0,0));
     score_label_black->setRotation(180);
-    this->addChild(score_label_black);
-    score_label_white = Label::createWithTTF("score: 0","FFF_Tusj.ttf", blockWidth);
+    this->addChild(score_label_black, 1);
+    score_label_white = Label::createWithTTF(res,"FFF_Tusj.ttf", blockWidth);
     score_label_white->setPosition(Point(origin.x + visibleSize.width/2,origin.y + visibleSize.height/2 + blockWidth/2));
-    this->addChild(score_label_white);
+    this->addChild(score_label_white, 1);
+    
+    audio = CocosDenshion::SimpleAudioEngine::getInstance();
     
     this->scheduleUpdate();
     return true;
@@ -425,7 +453,7 @@ void Runner::prepareHero() {
     myPhysicsBody->setContactTestBitmask(0xFFFFFFFF);
     //set the body isn't affected by the physics world's gravitational force
     myPhysicsBody->setGravityEnable(false);
-    addChild(this->mysprite, 2);
+    addChild(this->mysprite, 1);
     
     mysprite->setPhysicsBody(myPhysicsBody);
     auto action = RepeatForever::create(animateDaemonGoing);
@@ -442,16 +470,12 @@ void Runner::onEnter() {
     auto listener = EventListenerTouchOneByOne::create();
     
     listener->onTouchBegan = CC_CALLBACK_2(Runner::onTouchBegan, this);
-//    listener->onTouchMoved = CC_CALLBACK_2(AbstractLabirint::onTouchMoved, this);
-//    listener->onTouchEnded = CC_CALLBACK_2(AbstractLabirint::onTouchEnded, this);
-//    listener->onTouchCancelled = CC_CALLBACK_2(AbstractLabirint::onTouchCancelled, this);
+
     
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Runner::onContactBegin,
                                                     this);
-//
-//    contactListener->onContactSeperate = CC_CALLBACK_1(AbstractLabirint::onContactSeperate,
-//                                                       this);
+
     
     dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     dispatcher->addEventListenerWithSceneGraphPriority(contactListener,
@@ -459,142 +483,171 @@ void Runner::onEnter() {
 }
 
 void Runner::update(float delta) {
-    if (!isRunning) {
-        if (!isStop)
-            stopMen();
-        
-        else if(isStop and mysprite->getNumberOfRunningActions() <= 0) {
-            auto isAllMenStop = true;
-            for (auto h:hellmen)
-                if (h->getActionByTag(ENDING)) {
-                    isAllMenStop = false;
-                }
-            if (isAllMenStop) {
-                for (auto h:heavenmen)
+    if (!isMenu) {
+        if (!isRunning) {
+            if (!isStop)
+                stopMen();
+            
+            else if(isStop and mysprite->getNumberOfRunningActions() <= 0) {
+                auto isAllMenStop = true;
+                for (auto h:hellmen)
                     if (h->getActionByTag(ENDING)) {
                         isAllMenStop = false;
                     }
-            }
-            if (isAllMenStop) {
-                for (auto h:hellmen)
-                    h->stopAllActions();
-                
-                for (auto h:heavenmen)
-                    h->stopAllActions();
-            }
-            
-        }
-    }
-    else {
-        time += delta;
-        if (time >= MY_VELOCITY * 30) {
-            score++;
-            char *res = new char[50];
-            std::sprintf(res, "score: %i", score);
-            score_label_black->setString(res);
-            score_label_white->setString(res);
-            time = 0;
-        }
-        if (mysprite->getActionByTag(FLYING)) {
-            if (mysprite->getPositionY() == origin.y + visibleSize.height/2 + blockWidth +
-                hideSize) {
-                mysprite->stopAllActions();
-                auto action = RepeatForever::create(animateDaemonGoing);
-                action->setTag(DAEMON);
-                mysprite->runAction(action);
-                
-            }
-            else if (mysprite->getPositionY() == origin.y + visibleSize.height/2 - blockWidth -
-                     hideSize) {
-                mysprite->stopAllActions();
-                auto action = RepeatForever::create(animateAngelGoing);
-                action->setTag(ANGEL);
-                mysprite->runAction(action);
-                
-            }
-            else if (mysprite->getPositionY() <= -hideSize) {
-                mysprite->stopAllActions();
-                mysprite->setFlippedY(false);
+                if (isAllMenStop) {
+                    for (auto h:heavenmen)
+                        if (h->getActionByTag(ENDING)) {
+                            isAllMenStop = false;
+                        }
+                }
+                if (isAllMenStop) {
+                    for (auto h:hellmen)
+                        h->stopAllActions();
+                    
+                    for (auto h:heavenmen)
+                        h->stopAllActions();
+                    
+                    if (score > high_score) {
+                        audio->playEffect("harpup.wav", false, 1.0f, 0.0f, 1.0f);
+                        char *res = new char[50];
+                        std::sprintf(res, "NEW max score: %i", score);
+                        score_label_black->setString(res);
+                        score_label_white->setString(res);
+                        setMaxScore(score);
+    
+                        if (isHell) {
+                            wreath = Sprite::create("newmax_white.png");
 
-                mysprite->setPosition(Vec2(origin.x + visibleSize.width/4, origin.y + visibleSize.height +
-                                           mysprite->getContentSize().height*2/6*scale_hero));
-                auto flyaction = MoveTo::create(MY_VELOCITY, Vec2(origin.x + visibleSize.width/4,
-                                                        origin.y + visibleSize.height/2 + blockWidth +
-                                                        hideSize));
-                mysprite->runAction(flyaction);
-                auto action = RepeatForever::create(animateDaemonFlying);
-                action->setTag(FLYING);
-                mysprite->runAction(action);
-
-            }
-            else if (mysprite->getPositionY()  >= visibleSize.height + hideSize) {
-                mysprite->stopAllActions();
-                mysprite->setFlippedY(true);
-                mysprite->setPosition(Vec2(origin.x + visibleSize.width/4, origin.y - mysprite->getContentSize().height*2/6*scale_hero));
+                            wreath->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y  -
+                                                     hideSize));
+                            wreath->runAction(MoveTo::create(delta*20, Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2 - blockWidth - hideSize)));
+                        } else {
+                            wreath = Sprite::create("newmax_black.png");
+                            wreath->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height+
+                                                     hideSize));
+                            wreath->runAction(MoveTo::create(delta*20, Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2 + blockWidth  + hideSize)));
+                        }
+                        wreath->setScale(scale_hero);
+                        addChild(wreath, 2);
+                    }
+                    isMenu = true;
+                }
                 
-                auto flyaction = MoveTo::create(MY_VELOCITY, Vec2(origin.x + visibleSize.width/4,
-                                                        origin.y + visibleSize.height/2 - blockWidth -
-                                                        hideSize));
-                mysprite->runAction(flyaction);
-                auto action = RepeatForever::create(animateAngelFlying);
-                action->setTag(FLYING);
-                mysprite->runAction(action);
             }
         }
-        if (isHell) {
-            auto curSprite = hellmen.at(numOfHeaven);
-            if (curSprite->getPositionY() <= origin.y - hideSize) {
-                
-                curSprite->setPosition(Vec2(origin.x + visibleSize.width,
-                                            origin.y - curSprite->getContentSize().height*2/6*scale_hero));
-                
-                auto flyaction = Sequence::create(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
-                                                                                     origin.y + visibleSize.height/2 - blockWidth -
-                                                                                     hideSize)),
-                                                  MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/4,
-                                                                                     origin.y + visibleSize.height/2 - blockWidth -
-                                                                                     hideSize)), NULL);
-                flyaction->setTag(FLYING);
-                curSprite->runAction(flyaction);
-                
+        else {
+            time += delta;
+            if (time >= MY_VELOCITY * 30) {
+                score++;
+                setMaxScore(score);
+                char *res = new char[50];
+                std::sprintf(res, "score: %i (max: %i)",score ,high_score);
+                score_label_black->setString(res);
+                score_label_white->setString(res);
+                time = 0;
             }
-            else if (curSprite->getPositionX()  == origin.x + visibleSize.width/4) {
-                
-                auto flyaction = MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
-                                                                    origin.y - hideSize));
-                flyaction->setTag(FLYING);
-                curSprite->runAction(flyaction);
-                
-             //   numOfHeaven = (numOfHeaven + 1) % 3;
-                isHell = false;
+            if (mysprite->getActionByTag(FLYING)) {
+                if ((mysprite->getPositionY() >= origin.y + visibleSize.height/2 + blockWidth/2 +
+                     hideSize) and (mysprite->getPositionY() <= origin.y + visibleSize.height/2 + blockWidth +
+                                    hideSize)){
+                    mysprite->stopAllActions();
+                    auto action = RepeatForever::create(animateDaemonGoing);
+                    action->setTag(DAEMON);
+                    mysprite->runAction(action);
+                    
+                }
+                else if ((mysprite->getPositionY() <= origin.y + visibleSize.height/2 - blockWidth/2 -
+                          hideSize) and (mysprite->getPositionY() >= origin.y + visibleSize.height/2 - blockWidth -
+                                         hideSize)) {
+                    mysprite->stopAllActions();
+                    auto action = RepeatForever::create(animateAngelGoing);
+                    action->setTag(ANGEL);
+                    mysprite->runAction(action);
+                    
+                }
+                else if (mysprite->getPositionY() <= -hideSize) {
+                    mysprite->stopAllActions();
+                    mysprite->setFlippedY(false);
+
+                    mysprite->setPosition(Vec2(origin.x + visibleSize.width/4, origin.y + visibleSize.height +
+                                               mysprite->getContentSize().height*2/6*scale_hero));
+                    auto flyaction = MoveTo::create(MY_VELOCITY, Vec2(origin.x + visibleSize.width/4,
+                                                            origin.y + visibleSize.height/2 + blockWidth/2 +
+                                                            hideSize));
+                    mysprite->runAction(flyaction);
+                    auto action = RepeatForever::create(animateDaemonFlying);
+                    action->setTag(FLYING);
+                    mysprite->runAction(action);
+
+                }
+                else if (mysprite->getPositionY()  >= visibleSize.height + hideSize) {
+                    mysprite->stopAllActions();
+                    mysprite->setFlippedY(true);
+                    mysprite->setPosition(Vec2(origin.x + visibleSize.width/4, origin.y - mysprite->getContentSize().height*2/6*scale_hero));
+                    
+                    auto flyaction = MoveTo::create(MY_VELOCITY, Vec2(origin.x + visibleSize.width/4,
+                                                            origin.y + visibleSize.height/2 - blockWidth/2 -
+                                                            hideSize));
+                    mysprite->runAction(flyaction);
+                    auto action = RepeatForever::create(animateAngelFlying);
+                    action->setTag(FLYING);
+                    mysprite->runAction(action);
+                }
             }
-            
-        } else {
-            auto curSprite = heavenmen.at(numOfHeaven);
-            if (curSprite->getPositionY() >= origin.y + visibleSize.height + hideSize) {
+            if (isHell) {
+                auto curSprite = hellmen.at(numOfHeaven);
+                if (curSprite->getPositionY() <= origin.y - hideSize + 3) {
+                    
+                    curSprite->setPosition(Vec2(origin.x + visibleSize.width,
+                                                origin.y - curSprite->getContentSize().height*2/6*scale_hero));
+                    
+                    auto flyaction = Sequence::create(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
+                                                                                         origin.y + visibleSize.height/2 - blockWidth -
+                                                                                         hideSize)),
+                                                      MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/4,
+                                                                                         origin.y + visibleSize.height/2 - blockWidth -
+                                                                                         hideSize)), NULL);
+                    flyaction->setTag(FLYING);
+                    curSprite->runAction(flyaction);
+                    
+                }
+                else if (curSprite->getPositionX()  == origin.x + visibleSize.width/4) {
+                    
+                    auto flyaction = MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
+                                                                        origin.y - hideSize));
+                    flyaction->setTag(FLYING);
+                    curSprite->runAction(flyaction);
+                    
+                    isHell = false;
+                }
                 
-                curSprite->setPosition(Vec2(origin.x + visibleSize.width,
-                                            origin.y + visibleSize.height + curSprite->getContentSize().height*2/6*scale_hero));
-                
-                auto flyaction = Sequence::create(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
-                                                                                     origin.y + visibleSize.height/2 + blockWidth +
-                                                                                     hideSize)),
-                                                  MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/4,
-                                                                                     origin.y + visibleSize.height/2 + blockWidth +
-                                                                                     hideSize)), NULL);
-                flyaction->setTag(FLYING);
-                curSprite->runAction(flyaction);
-                
-            }
-            else if (curSprite->getPositionX()  == origin.x + visibleSize.width/4) {
-                
-                auto flyaction = MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
-                                                                  origin.y + visibleSize.height + hideSize));
-                flyaction->setTag(FLYING);
-                curSprite->runAction(flyaction);
-                
-                numOfHeaven = (numOfHeaven + 1) % 3;
-                isHell = true;
+            } else {
+                auto curSprite = heavenmen.at(numOfHeaven);
+                if (curSprite->getPositionY() >= origin.y + visibleSize.height + hideSize - 3) {
+                    
+                    curSprite->setPosition(Vec2(origin.x + visibleSize.width,
+                                                origin.y + visibleSize.height + curSprite->getContentSize().height*2/6*scale_hero));
+                    
+                    auto flyaction = Sequence::create(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
+                                                                                         origin.y + visibleSize.height/2 + blockWidth +
+                                                                                         hideSize)),
+                                                      MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/4,
+                                                                                         origin.y + visibleSize.height/2 + blockWidth +
+                                                                                         hideSize)), NULL);
+                    flyaction->setTag(FLYING);
+                    curSprite->runAction(flyaction);
+                    
+                }
+                else if (curSprite->getPositionX()  == origin.x + visibleSize.width/4) {
+                    
+                    auto flyaction = MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
+                                                                      origin.y + visibleSize.height + hideSize));
+                    flyaction->setTag(FLYING);
+                    curSprite->runAction(flyaction);
+                    
+                    numOfHeaven = (numOfHeaven + 1) % 3;
+                    isHell = true;
+                }
             }
         }
     }
@@ -625,18 +678,26 @@ bool Runner::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) {
     return true;
 }
 
+void Runner::lose() {
+    isRunning = false;
+    audio->playEffect("pain.wav", false, 2.0f, 0.0f, 1.0f);
+    restartItem->setVisible(true);
+    closeItem->setVisible(true);
+}
+
 bool Runner::onContactBegin(const cocos2d::PhysicsContact &contact) {
     if (isRunning) {
         auto nodeA = contact.getShapeA()->getBody()->getNode();
         auto nodeB = contact.getShapeB()->getBody()->getNode();
-        
+
         if ((nodeA->getTag() == HERO_SPRITE_TAG and nodeB->getTag() == HEAVENMEN) or
             (nodeB->getTag() == HERO_SPRITE_TAG and nodeA->getTag() == HEAVENMEN)) {
             mysprite->stopAllActions();
             mysprite->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("daemondeath.png"));
             mysprite->runAction(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
                                                origin.y + visibleSize.height/2 + blockWidth/2 + hideSize)));
-            isRunning = false;
+            isHell = false;
+            lose();
             return false;
         } else if ((nodeA->getTag() == HERO_SPRITE_TAG and nodeB->getTag() == HELLMEN) or
                    (nodeB->getTag() == HERO_SPRITE_TAG and nodeA->getTag() == HELLMEN)) {
@@ -644,17 +705,30 @@ bool Runner::onContactBegin(const cocos2d::PhysicsContact &contact) {
             mysprite->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("angeldeath.png"));
             mysprite->runAction(MoveTo::create(MY_VELOCITY*5, Vec2(origin.x + visibleSize.width/2,
                                                                    origin.y + visibleSize.height/2 - blockWidth/2 - hideSize)));
-            isRunning = false;
+            isHell = true;
+            lose();
             return false;
         } else if ((nodeA->getTag() == HEAVENMEN and nodeB->getTag() == HEAVENMEN) or
                    (nodeA->getTag() == HELLMEN and nodeB->getTag() == HELLMEN)) {
             return false;
+        } else if ((nodeA->getTag() == HERO_SPRITE_TAG and nodeB->getTag() == BLOCK) or
+                   (nodeB->getTag() == HERO_SPRITE_TAG and nodeA->getTag() == BLOCK)) {
+            audio->playEffect("step.wav", false, 1.0f, 0.0f, 0.7f);
         }
         return true;
     }
     return false;
 }
 
+void Runner::setMaxScore(int current_score) {
+    cocos2d::UserDefault *def=UserDefault::getInstance();
+    auto high_score=def->getIntegerForKey(HIGH_SCORE);
+    if (high_score < current_score) {
+        def->setIntegerForKey(HIGH_SCORE, current_score);
+        def->flush();
+        high_score = current_score;
+    }
+}
 
 void Runner::stopMen() {
     for (auto hellboy : hellmen) {
@@ -689,6 +763,19 @@ void Runner::stopMen() {
     
     isStop = true;
     
+}
+
+void Runner::menuPlayCallback(Ref* pSender)
+{
+    isRunning = true;
+    isMenu = false;
+    
+    playItem->setVisible(false);
+    closeItem->setVisible(false);
+}
+void Runner::menuRestartCallback(Ref* pSender)
+{
+    cocos2d::Director::getInstance()->replaceScene(TransitionCrossFade::create(1.0, Runner::createScene()));
 }
 
 void Runner::menuCloseCallback(Ref* pSender)
