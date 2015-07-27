@@ -9,7 +9,8 @@
     <uses-feature android:glEsVersion="0x00020000" />
 
     <application android:label="@string/app_name"
-                 android:icon="@drawable/icon">
+                 android:icon="@drawable/icon"
+                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 					 
         <!-- Tell Cocos2dxActivity the name of our .so -->
         <meta-data android:name="android.app.lib_name"
@@ -19,6 +20,8 @@
                   android:label="@string/app_name"
                   android:screenOrientation="reverseLandscape"
                   android:windowSoftInputMode="stateAlwaysHidden"
+                  android:windowFullscreen = "true"
+                  android:windowNoTitle="true"
                   android:configChanges="orientation|keyboardHidden">
 
             <intent-filter>

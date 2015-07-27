@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D127208B-00A6-4644-9AC6-0EFAFF835D57</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C302592E08DB3B1E70B13BD03C8160916B3A201C</key>
+		<string>github.com:lilyok/AoDRunner.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>proj.ios_mac/AoDrunner.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C302592E08DB3B1E70B13BD03C8160916B3A201C</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:lilyok/AoDRunner.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C302592E08DB3B1E70B13BD03C8160916B3A201C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C302592E08DB3B1E70B13BD03C8160916B3A201C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AoDrunner</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -71,6 +71,9 @@ public:
     void stopMen();
     void lose();
     void setMaxScore(int current_score);
+    void gameActions(float delta);
+    void stoppingGame(float delta);
+    void continuingGame(float delta);
 };
 
 #endif // __Runner_SCENE_H__
