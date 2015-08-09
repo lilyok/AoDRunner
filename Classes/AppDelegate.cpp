@@ -16,7 +16,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLView::create("Angel or Daemon");
+        glview = GLView::create("BETWEEN");
         director->setOpenGLView(glview);
     }
     // turn on display FPS
